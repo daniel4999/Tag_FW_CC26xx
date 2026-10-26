@@ -128,7 +128,7 @@ register, after which learning mode was restored. This admission mismatch is
 separate from the image wait arithmetic fix. Avoid unnecessary reflashing when
 the actual blocker is enrollment.
 
-## Flashing and attribution
+## Flashing
 
 Use the versioned community release's README and checksums. Back up each tag,
 confirm its board/SoC, and distinguish initial provisioning from an application-only
@@ -138,7 +138,4 @@ The current tag receive switch has no handlers for generic AP firmware-update
 type 3 or tag-config type 0xA8. Those AP buttons cannot install this compiled
 fix. This release does not add an OTA updater.
 
-Discovery, reproduction and physical validation: **Daniel (@daniel4999)**.
-Source analysis, patch and regression tooling were prepared with Codex assistance.
 Original firmware attribution remains with tsl0922 and upstream contributors.
-See [CREDITS.md](../CREDITS.md).

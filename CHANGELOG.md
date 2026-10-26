@@ -10,7 +10,6 @@ Community release of the CC2630 short-wait fix.
 - Validate a patched spare with distinct images and later check-ins, including
   the published official OpenEPaperLink 3.00 / C6 0024 application.
 - Provide full and application-only wired-flash images, instructions and SHA256 checksums.
-- Credit Daniel (@daniel4999) for discovery, reproduction and physical testing.
 - Keep tag pushes as build-only workflows; reviewed releases are published
   manually so automation cannot overwrite published metadata or assets.
 

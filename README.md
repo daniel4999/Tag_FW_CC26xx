@@ -18,14 +18,8 @@ This is a **community fork and release**, not an upstream-endorsed release.
 Confirm each board is compatible before programming. Current firmware requires
 wired flashing; the AP's generic firmware-update button is not supported here.
 
-### Credits
-
-- Original firmware: [tsl0922 and upstream contributors](https://github.com/tsl0922/Tag_FW_CC26xx).
-- Bug discovery, reproduction and physical hardware validation:
-  **[Daniel (@daniel4999)](https://github.com/daniel4999)**.
-- Source investigation, patch and regression tooling were prepared with Codex assistance.
-
-See [CREDITS.md](CREDITS.md) for attribution and [CHANGELOG.md](CHANGELOG.md) for scope.
+Based on [tsl0922/Tag_FW_CC26xx](https://github.com/tsl0922/Tag_FW_CC26xx).
+See [CHANGELOG.md](CHANGELOG.md) for release scope.
 
 ## Supported Chip / Tags
 
