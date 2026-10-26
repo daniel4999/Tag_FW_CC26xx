@@ -1,24 +1,12 @@
-name: release
+name: Release build
 
 on:
   push:
-    tags: ["*"]
+    tags: ["v*"]
+  workflow_dispatch:
 
+# Build tagged sources, but publish reviewed packages manually. The inherited
+# release-action job could overwrite a published release and change it to draft.
 jobs:
   build:
     uses: ./.github/workflows/build.yml
-  publish:
-    needs: [build]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: Tag_FW_CC26xx
-      - uses: ncipollo/release-action@v1
-        with:
-          artifacts: Tag_FW_CC26xx.bin
-          allowUpdates: true
-          draft: true

@@ -2,12 +2,30 @@
 
 [OpenEPaperLink](https://github.com/OpenEPaperLink/OpenEPaperLink) firmware for CC26xx based tags.
 
-## Experimental block-wait fix
+## Community wait-fix release
 
-This branch guards a wait-subtraction underflow exposed by OpenEPaperLink 3.00's
-15 ms cached-block timing. See [the investigation and validation plan](docs/cc2630-block-wait-underflow.md).
-The patched tag firmware builds and passes the source-derived arithmetic regression;
-physical tag testing is still pending.
+This fork provides a CC2630 block-wait fix for image-transfer hangs exposed by
+OpenEPaperLink 3.00 / ESP32-C6 radio 0024's 15 ms cached-block timing.
+
+[Download v0.1.0](https://github.com/daniel4999/Tag_FW_CC26xx/releases/tag/v0.1.0)
+for the tested firmware, flashing instructions, source patch and checksums.
+Read the [investigation and validation report](docs/cc2630-block-wait-underflow.md)
+before flashing. The patched spare completed multi-block image delivery and
+later check-ins using the published, unmodified official C6 application.
+Testing is limited to one patched tag; long-term and all-board validation remain open.
+
+This is a **community fork and release**, not an upstream-endorsed release.
+Confirm each board is compatible before programming. Current firmware requires
+wired flashing; the AP's generic firmware-update button is not supported here.
+
+### Credits
+
+- Original firmware: [tsl0922 and upstream contributors](https://github.com/tsl0922/Tag_FW_CC26xx).
+- Bug discovery, reproduction and physical hardware validation:
+  **[Daniel (@daniel4999)](https://github.com/daniel4999)**.
+- Source investigation, patch and regression tooling were prepared with Codex assistance.
+
+See [CREDITS.md](CREDITS.md) for attribution and [CHANGELOG.md](CHANGELOG.md) for scope.
 
 ## Supported Chip / Tags
 

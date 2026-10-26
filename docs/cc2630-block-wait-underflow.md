@@ -1,9 +1,9 @@
 # CC2630 block-wait underflow with OpenEPaperLink 3.00
 
-Investigation and proposed fix, 26 October 2026. **The patched tag firmware has
-not yet been flashed or hardware-tested.** Radio-side tests below used the
-unchanged tag firmware. The existing AP workarounds should remain until a
-patched tag has been tested with stock timing.
+Investigation and community fix, 26 October 2026. A patched spare has now passed
+bounded physical testing with the published official OpenEPaperLink 3.00 / C6
+0024 application. The earlier radio comparisons used unchanged tag firmware;
+the additional patched-spare tests are documented below.
 
 ## Scope and symptoms
 
@@ -81,15 +81,64 @@ with the original flags. The baseline rebuild matched the previously flashed
 image byte for byte. The complete candidate links, its disassembly checks the
 bound before subtraction, and its CCFG/bootloader configuration is unchanged.
 
-## Hardware validation still required
+## Completed hardware validation
 
-1. Confirm one board's CC2630 identity; save its full flash/CCFG and IEEE data.
-2. Flash the patched application by wire, preserving its bootloader settings.
-3. Confirm ordinary image delivery with the existing AP workaround first.
-4. In an isolated test, use stock C6 0024 / 15 ms cached timing. Send distinct
-   multi-block images and verify completion, later check-ins, and later updates.
-5. Observe continued operation before changing the household AP workarounds.
+One spare tag was programmed with the full fixed CC2630 image and tested in stages:
+
+| Stage | Result |
+| --- | --- |
+| Existing 140 ms AP workaround | Distinct baseline image completed; physically confirmed |
+| Isolated per-tag 15 ms cached-wait diagnostic | Two distinct images completed; physically confirmed; later normal check-in |
+| Published official 3.00 C6 application / version 0024 | Fresh two-block image completed; physically confirmed; later normal check-ins |
+
+The official application was downloaded from the
+[3.00 release](https://github.com/OpenEPaperLink/OpenEPaperLink/releases/tag/3.00)
+and verified against GitHub's published SHA256:
+`392d86450a9c70fd2c170861cbc75c454fb6eac2b256a2161b1ea30bc6bc9788`.
+The AP's S3 firmware remained at the tested release; only the C6 application was
+replaced and the AP was rebooted before testing.
+
+In the official-radio test, the AP preloaded both blocks before the tag requested
+them, served blocks 0 and 1, and received XFER_COMPLETE. The pending queue cleared
+and the completed count advanced. Block 0 needed a six-part retry; completion
+was successful. A subsequent ordinary check-in and the physical screen were
+confirmed. No uncached fallback request was observed.
+
+The patched full image has SHA256
+`32e46cd191049575d481e3a16803268b229bc1c2e715e90cbc7914543479b9c4`
+(CRC32 `1d96158a`). The application-only image has SHA256
+`66ab4cc5810b1cbbe5b525855fecdbc8920241568e078940b7599db971bb4c0b`
+(CRC32 `e9b38ad4`).
+
+### Limits
+
+The original failing tag and patched spare were different physical units; this
+is not a same-unit before/after reflash trial. The arithmetic defect is reproduced
+independently by the C regression and matching original ARM binary. One successful
+patched spare does not establish all-board compatibility, long-term reliability,
+or measured battery savings. Other affected unpatched tags can still hang with
+stock 15 ms cached waits.
+
+## Separate enrollment issue
+
+The tested AP learning mode rejects discovery pings from unknown MACs, while this
+CC26xx firmware waits for ping/pong discovery before its first full check-in.
+The spare initially displayed NO AP FOUND; temporarily opening admission let it
+register, after which learning mode was restored. This admission mismatch is
+separate from the image wait arithmetic fix. Avoid unnecessary reflashing when
+the actual blocker is enrollment.
+
+## Flashing and attribution
+
+Use the versioned community release's README and checksums. Back up each tag,
+confirm its board/SoC, and distinguish initial provisioning from an application-only
+update of an already provisioned tag.
 
 The current tag receive switch has no handlers for generic AP firmware-update
 type 3 or tag-config type 0xA8. Those AP buttons cannot install this compiled
-fix. This branch does not add an OTA updater.
+fix. This release does not add an OTA updater.
+
+Discovery, reproduction and physical validation: **Daniel (@daniel4999)**.
+Source analysis, patch and regression tooling were prepared with Codex assistance.
+Original firmware attribution remains with tsl0922 and upstream contributors.
+See [CREDITS.md](../CREDITS.md).
