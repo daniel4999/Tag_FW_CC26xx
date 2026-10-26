@@ -2,6 +2,13 @@
 
 [OpenEPaperLink](https://github.com/OpenEPaperLink/OpenEPaperLink) firmware for CC26xx based tags.
 
+## Experimental block-wait fix
+
+This branch guards a wait-subtraction underflow exposed by OpenEPaperLink 3.00's
+15 ms cached-block timing. See [the investigation and validation plan](docs/cc2630-block-wait-underflow.md).
+The patched tag firmware builds and passes the source-derived arithmetic regression;
+physical tag testing is still pending.
+
 ## Supported Chip / Tags
 
 - CC2630: `TG‐GM29MT1C` / `ST‐GM29MTF` (sleep current: `~2uA`)
